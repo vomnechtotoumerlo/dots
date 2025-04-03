@@ -59,6 +59,30 @@ module Dots
     orthogonal?(plane1[0..2], plane2[0..2])
   end
 
+  def planes_parallel?(plane1, plane2)
+    raise ArgumentError, "Плоскость должна задаваться 4 цифрами" unless plane1.size == 4 && plane2.size == 4
+    norma1 = norma(plane1[0..2])
+    norma2 = norma(plane2[0..2])
+    norma1 != 0 && norma1 == norma2
+  end
 
+  # расстояние между двумя параллельными плоскостями
+  def distance_between_planes(plane1, plane2)
+    unless planes_parallel?(plane1, plane2)
+      return "Плоскости не параллельны, расстояние не определено"
+    end
+    point_on_plane1 = [0, 0, 0]
+    distance = distance_between_point_and_plane(point_on_plane1, plane2)
+    return distance
+  end
+  
+  def lines_parallel?(line1_a, line1_b, line2_a, line2_b)
+    vec1 = direction_vector(line1_a, line1_b)
+    vec2 = direction_vector(line2_a, line2_b)
+    
+    # Прямые параллельны, если их векторы пропорциональны
+    ratio = vec1[0].to_f / vec2[0]
+    vec1[1] == ratio * vec2[1] && vec1[2] == ratio * vec2[2]
+  end
 
 end
